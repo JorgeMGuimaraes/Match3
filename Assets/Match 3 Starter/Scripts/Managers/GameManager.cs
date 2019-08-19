@@ -24,6 +24,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Assets.Code.GameCore;
 
 public class GameManager : MonoBehaviour {
 	public static GameManager instance;
@@ -37,7 +38,11 @@ public class GameManager : MonoBehaviour {
 	private Color fadeTransparency = new Color(0, 0, 0, .04f);
 	private string currentScene;
 	private AsyncOperation async;
-
+	#region Unity Methods
+	private void Start() {
+		SetGameState(new GSMainMenu());
+	}
+	#endregion
 	void Awake() {
 		// Only 1 Game Manager can exist at a time
 		if (instance == null) {
@@ -110,6 +115,8 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public GameState CurrentState { get; private set; }
+
 	public void ExitGame() {
 		// If we are running in a standalone build of the game
 		#if UNITY_STANDALONE
@@ -136,5 +143,14 @@ public class GameManager : MonoBehaviour {
 			isReturning = true;
         }
 	}
+
+	#region Helpers
+	public void SetGameState(GameState state) {
+		if (CurrentState != null) { CurrentState.OnStateExit(); }
+		CurrentState	= state;
+		gameObject.name	= "GM - " + state.ToString();
+		if (CurrentState != null) { CurrentState.OnStateEnter(); }			
+	}
+	#endregion
 
 }
