@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour {
 	public float fadeSpeed = .02f;
 
 	private Color fadeTransparency = new Color(0, 0, 0, .04f);
-	private string currentScene;
 	private AsyncOperation async;
 	#region Unity Methods
 	private void Start() {
@@ -72,7 +71,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
-		currentScene = scene.name;
+		CurrentSceneName = scene.name;
 		instance.StartCoroutine(FadeIn(instance.faderObj, instance.faderImg));
 	}
 
@@ -109,33 +108,12 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// Get the current scene name
-	public string CurrentSceneName {
-		get{
-			return currentScene;
-		}
-	}
-
+	public string CurrentSceneName { get; private set; }
 	public GameState CurrentState { get; private set; }
-
-	public void ExitGame() {
-		// If we are running in a standalone build of the game
-		#if UNITY_STANDALONE
-			// Quit the application
-			Application.Quit();
-		#endif
-
-		// If we are running in the editor
-		#if UNITY_EDITOR
-			// Stop playing the scene
-			UnityEditor.EditorApplication.isPlaying = false;
-		#endif
-	}
-
 	private bool isReturning = false;
+
 	public void ReturnToMenu() {
-		if (isReturning) {
-			return;
-		}
+		if (isReturning) { return; }
 
         if (CurrentSceneName != "Menu") {
 			StopAllCoroutines();
@@ -145,12 +123,29 @@ public class GameManager : MonoBehaviour {
 	}
 
 	#region Helpers
-	public void SetGameState(GameState state) {
+	public void SetGameState( GameState state) {
 		if (CurrentState != null) { CurrentState.OnStateExit(); }
 		CurrentState	= state;
 		gameObject.name	= "GM - " + state.ToString();
 		if (CurrentState != null) { CurrentState.OnStateEnter(); }			
 	}
 	#endregion
+	#region Garbage
+	/*
+public void ExitGame() {
+	// If we are running in a standalone build of the game
+	#if UNITY_STANDALONE
+		// Quit the application
+		Application.Quit();
+	#endif
 
+	// If we are running in the editor
+	#if UNITY_EDITOR
+		// Stop playing the scene
+		UnityEditor.EditorApplication.isPlaying = false;
+	#endif
+}
+*/
+
+	#endregion
 }

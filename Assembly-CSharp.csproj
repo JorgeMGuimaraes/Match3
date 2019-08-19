@@ -60,8 +60,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Code\GameCore\BaseButton.cs" />
     <Compile Include="Assets\Code\GameCore\GameState.cs" />
+    <Compile Include="Assets\Code\GameCore\GSExitGame.cs" />
     <Compile Include="Assets\Code\GameCore\GSMainMenu.cs" />
+    <Compile Include="Assets\Code\UI\ExitButton.cs" />
     <Compile Include="Assets\Match 3 Starter\Scripts\Board and Grid\BoardManager.cs" />
     <Compile Include="Assets\Match 3 Starter\Scripts\Board and Grid\Tile.cs" />
     <Compile Include="Assets\Match 3 Starter\Scripts\Effects\GUISizePingPong.cs" />
