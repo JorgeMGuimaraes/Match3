@@ -30,7 +30,6 @@ namespace Assets.Code.GameCore {
 				GameManager.instance.StopAllCoroutines();
 				GameManager.instance.LoadScene("Menu");
 			}
-			base.OnStateEnter();
 		}
 
 		public override void OnStateExit() => base.OnStateExit();

@@ -23,6 +23,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Code.GameCore;
 
 public class Tile : MonoBehaviour {
 	private static Color selectedColor = new Color(.5f, .5f, .5f, 1.0f);
@@ -52,7 +53,7 @@ public class Tile : MonoBehaviour {
 
 	void OnMouseDown() {
 		// Not Selectable conditions
-		if (render.sprite == null || BoardManager.instance.IsShifting) {
+		if (render.sprite == null || BoardManager.instance.IsShifting || GameManager.instance.CurrentState.GetType() == typeof(GSPaused)) {
 			return;
 		}
 

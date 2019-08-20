@@ -24,7 +24,7 @@ namespace Assets.Code.GameCore {
 		#region Methods
 		public override string ToString() => "Playing Game";
 		public override void Tick() {
-			if (Input.GetKeyDown(KeyCode.Escape)) { GameManager.instance.SetGameState(new GSMainMenu()); }
+			CheckPauseInput();
 		}
 		public override void OnStateEnter() {
 			StartGame();
@@ -34,10 +34,15 @@ namespace Assets.Code.GameCore {
 		#endregion
 		#region Helpers
 		private void StartGame() {
-			GameManager.instance.LoadScene("Game");
+			//GameManager.instance.LoadScene("Game");
+		}
+		private void CheckPauseInput() {
+			if (Input.GetKeyDown(KeyCode.Escape)) { GameManager.instance.SetGameState(new GSPaused()); }
+
 		}
 		#endregion
 		#region Properties
+		public bool IsPlaying { get; } = true;
 		#endregion
 	}
 }

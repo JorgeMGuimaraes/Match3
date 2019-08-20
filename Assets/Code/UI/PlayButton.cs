@@ -24,7 +24,10 @@ namespace Assets.Code.UI {
 		#region Methods
 		#endregion
 		#region Helpers
-		internal override void BtnAction() => GameManager.instance.SetGameState(new GSPlaying());
+		internal override void BtnAction() {
+			GameManager.instance.LoadScene("Game");
+			GameManager.instance.SetGameState(new GSPlaying());
+		}
 		#endregion
 		#region Properties
 		#endregion

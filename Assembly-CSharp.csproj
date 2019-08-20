@@ -64,8 +64,11 @@
     <Compile Include="Assets\Code\GameCore\GameState.cs" />
     <Compile Include="Assets\Code\GameCore\GSExitGame.cs" />
     <Compile Include="Assets\Code\GameCore\GSMainMenu.cs" />
+    <Compile Include="Assets\Code\GameCore\GSPaused.cs" />
     <Compile Include="Assets\Code\GameCore\GSPlaying.cs" />
+    <Compile Include="Assets\Code\UI\ContinueButton.cs" />
     <Compile Include="Assets\Code\UI\ExitButton.cs" />
+    <Compile Include="Assets\Code\UI\MenuButton.cs" />
     <Compile Include="Assets\Code\UI\PlayButton.cs" />
     <Compile Include="Assets\Match 3 Starter\Scripts\Board and Grid\BoardManager.cs" />
     <Compile Include="Assets\Match 3 Starter\Scripts\Board and Grid\Tile.cs" />

@@ -29,43 +29,41 @@ using Assets.Code.GameCore;
 public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 
-	public GameObject faderObj;
-	public Image faderImg;
-	public bool gameOver = false;
-
-	public float fadeSpeed = .02f;
-
-	private Color fadeTransparency = new Color(0, 0, 0, .04f);
-	private AsyncOperation async;
+	public GameObject
+							faderObj,
+							pauseMenu;
+	public Image			faderImg;
+	public bool				gameOver			= false;
+	public float			fadeSpeed			= .02f;
+	private Color			fadeTransparency	= new Color(0, 0, 0, .04f);
+	private AsyncOperation	async;
 	#region Unity Methods
-	private void Start() {
-		SetGameState(new GSMainMenu());
-	}
-	#endregion
 	void Awake() {
 		// Only 1 Game Manager can exist at a time
 		if (instance == null) {
 			DontDestroyOnLoad(gameObject);
 			instance = GetComponent<GameManager>();
 			SceneManager.sceneLoaded += OnLevelFinishedLoading;
-		} else {
-			Destroy(gameObject);
 		}
+		else { Destroy(gameObject); }
 	}
-
+	private void Start() {
+		SetGameState(new GSMainMenu());
+	}
 	void Update() {
 		CurrentState.Tick();
 	}
+	#endregion
+	#region Helpers
 
 	// Load a scene with a specified string name
 	public void LoadScene(string sceneName) {
+		//Todo: change scene name to dictionary
 		instance.StartCoroutine(Load(sceneName));
 		instance.StartCoroutine(FadeOut(instance.faderObj, instance.faderImg));
 	}
-
-	// Reload the current scene
 	public void ReloadScene() => LoadScene(SceneManager.GetActiveScene().name);
-	// Allows the scene to change once it is loaded
+
 	public void ActivateScene() => async.allowSceneActivation = true;
 
 	private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
@@ -99,11 +97,6 @@ public class GameManager : MonoBehaviour {
 		yield return async;
 		//isReturning = false;
     }
-	// Get the current scene name
-	public string CurrentSceneName { get; private set; }
-	public GameState CurrentState { get; private set; }
-	private bool isReturning = false;
-	#region Helpers
 	public void SetGameState( GameState state) {
 		if (CurrentState != null) { CurrentState.OnStateExit(); }
 		CurrentState	= state;
@@ -111,34 +104,8 @@ public class GameManager : MonoBehaviour {
 		if (CurrentState != null) { CurrentState.OnStateEnter(); }			
 	}
 	#endregion
-	#region Garbage
-	/*
-public void ReturnToMenu() {
-	if (isReturning) { return; }
-
-	if (CurrentSceneName != "Menu") {
-		StopAllCoroutines();
-		LoadScene("Menu");
-		isReturning = true;
-	}
-}
-*/
-
-	/*
-public void ExitGame() {
-	// If we are running in a standalone build of the game
-	#if UNITY_STANDALONE
-		// Quit the application
-		Application.Quit();
-	#endif
-
-	// If we are running in the editor
-	#if UNITY_EDITOR
-		// Stop playing the scene
-		UnityEditor.EditorApplication.isPlaying = false;
-	#endif
-}
-*/
-
+	#region Properties
+	public string CurrentSceneName { get; private set; }
+	public GameState CurrentState { get; private set; }
 	#endregion
 }
