@@ -54,9 +54,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKeyDown(KeyCode.Escape)) {
-			ReturnToMenu();
-		}
+		CurrentState.Tick();
 	}
 
 	// Load a scene with a specified string name
@@ -66,9 +64,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// Reload the current scene
-	public void ReloadScene() {
-		LoadScene(SceneManager.GetActiveScene().name);
-	}
+	public void ReloadScene() => LoadScene(SceneManager.GetActiveScene().name);
+	// Allows the scene to change once it is loaded
+	public void ActivateScene() => async.allowSceneActivation = true;
 
 	private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
 		CurrentSceneName = scene.name;
@@ -99,29 +97,12 @@ public class GameManager : MonoBehaviour {
 		async = SceneManager.LoadSceneAsync(sceneName);
 		async.allowSceneActivation = false;
 		yield return async;
-		isReturning = false;
+		//isReturning = false;
     }
-
-	// Allows the scene to change once it is loaded
-	public void ActivateScene() {
-		async.allowSceneActivation = true;
-	}
-
 	// Get the current scene name
 	public string CurrentSceneName { get; private set; }
 	public GameState CurrentState { get; private set; }
 	private bool isReturning = false;
-
-	public void ReturnToMenu() {
-		if (isReturning) { return; }
-
-        if (CurrentSceneName != "Menu") {
-			StopAllCoroutines();
-			LoadScene("Menu");
-			isReturning = true;
-        }
-	}
-
 	#region Helpers
 	public void SetGameState( GameState state) {
 		if (CurrentState != null) { CurrentState.OnStateExit(); }
@@ -131,6 +112,18 @@ public class GameManager : MonoBehaviour {
 	}
 	#endregion
 	#region Garbage
+	/*
+public void ReturnToMenu() {
+	if (isReturning) { return; }
+
+	if (CurrentSceneName != "Menu") {
+		StopAllCoroutines();
+		LoadScene("Menu");
+		isReturning = true;
+	}
+}
+*/
+
 	/*
 public void ExitGame() {
 	// If we are running in a standalone build of the game

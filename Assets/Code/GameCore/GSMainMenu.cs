@@ -25,7 +25,14 @@ namespace Assets.Code.GameCore {
 		public override void Tick() {
 			
 		}
-		public override void OnStateEnter() => base.OnStateEnter();
+		public override void OnStateEnter() {
+			if (GameManager.instance.CurrentSceneName!= "Menu") {
+				GameManager.instance.StopAllCoroutines();
+				GameManager.instance.LoadScene("Menu");
+			}
+			base.OnStateEnter();
+		}
+
 		public override void OnStateExit() => base.OnStateExit();
 
 		#endregion
